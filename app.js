@@ -10,23 +10,26 @@ const { errorHandler } = require("./Middlewares/errorMiddleware.js");
 const connectDatabase = require("./config/database.js");
 
 const app = express();
-const PORT = process.env.PORT || 5000; // Fallback if PORT not set
+const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
-connectDatabase(); // Make sure your connectDatabase() handles connection errors properly
+connectDatabase(); // Ensure your connectDatabase() logs success/failure
 
-// Middleware
+// CORS middleware
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "https://taskmanager-client-three.vercel.app/"
-    ]
+      "http://localhost:5173", // Local frontend
+      "https://taskmanager-client-three.vercel.app" // Vercel frontend
+    ],
+    credentials: true, // Allow cookies/credentials
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
   })
 );
 
+// Body parser middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Fixed
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/auth", authRoutes);
@@ -39,5 +42,3 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
-
