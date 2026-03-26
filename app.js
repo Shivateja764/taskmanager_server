@@ -20,7 +20,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://taskmanager-client-shivateja764s-projects.vercel.app/"
+      "https://taskmanager-client-three.vercel.app/"
     ]
   })
 );
