@@ -9,12 +9,10 @@ const connectDatabase = () => {
     process.exit(1);
   }
 
-  mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then(() => console.log("Database connected"))
-    .catch(err => console.log("Database connection failed", err));
-};
-
+  mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Database connected successfully"))
+  .catch((err) => {
+    console.error("Database connection failed:", err);
+    process.exit(1); // stop server if DB not connected
+  });}
 module.exports = connectDatabase;
