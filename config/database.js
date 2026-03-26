@@ -1,18 +1,20 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
+const mongoose = require('mongoose');
 
-async function connectDatabase() {
-  try {
-    await mongoose.connect(process.env.mongodb_uri, {
-      dbName: process.env.mongodb_name,
-    });
-    console.log(
-      "Database connected successfully to " + process.env.mongodb_name
-    );
-  } catch (error) {
-    console.log("Database connection failed");
-    console.log(error);
+const connectDatabase = () => {
+  const uri = `${process.env.MONGO_URI}/${process.env.MONGO_DBNAME}`;
+  console.log("Connecting to MongoDB with URI:", uri);
+
+  if (!process.env.MONGO_URI || !process.env.MONGO_DBNAME) {
+    console.error("MONGO_URI or MONGO_DBNAME is undefined!");
+    process.exit(1);
   }
-}
+
+  mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => console.log("Database connected"))
+    .catch(err => console.log("Database connection failed", err));
+};
 
 module.exports = connectDatabase;
